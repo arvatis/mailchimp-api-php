@@ -188,6 +188,23 @@ class MailchimpLists extends Mailchimp
     }
 
     /**
+     * Creates a new list
+     *
+     * @param array $parameters
+     *   Associative array of optional request parameters.
+     * @param bool $batch
+     *   TRUE to create a new pending batch operation.
+     *
+     * @return object
+     *
+     * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/#create-post_lists
+     */
+    public function createList($parameters = [], $batch = false)
+    {
+        return $this->request('POST', '/lists', null, $parameters, $batch);
+    }
+
+    /**
      * Adds a new member to a MailChimp list.
      *
      * @param string $list_id
