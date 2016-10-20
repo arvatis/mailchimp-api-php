@@ -96,18 +96,20 @@ class MailchimpLists extends Mailchimp
      *   The ID of the list.
      * @param array $parameters
      *   Associative array of optional request parameters.
+     * @param bool $batch
+     *   TRUE to create a new pending batch operation.
      *
      * @return object
      *
      * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/interest-categories/#create-post_lists_list_id_interest_categories
      */
-    public function createInterestCategory($list_id, $parameters = [])
+    public function createInterestCategory($list_id, $parameters = [], $batch = false)
     {
         $tokens = [
             'list_id' => $list_id,
         ];
 
-        return $this->request('POST', '/lists/{list_id}/interest-categories', $tokens, $parameters);
+        return $this->request('POST', '/lists/{list_id}/interest-categories', $tokens, $parameters, $batch);
     }
 
     /**
@@ -144,20 +146,22 @@ class MailchimpLists extends Mailchimp
      *   The ID of the interest category.
      * @param array $parameters
      *   Associative array of optional request parameters.
+     * @param bool $batch
+     *   TRUE to create a new pending batch operation.
      *
      * @return object
      *
      * @see http://developer.mailchimp.com/documentation/mailchimp/reference/lists/interest-categories/interests/#create-post_lists_list_id_interest_categories_interest_category_id_interests
      */
-    public function createInterest($list_id, $interest_category_id, $parameters = [])
+    public function createInterest($list_id, $interest_category_id, $parameters = [], $batch = false)
     {
         $tokens = [
             'list_id' => $list_id,
             'interest_category_id' => $interest_category_id,
         ];
 
-        return $this->request('GET', '/lists/{list_id}/interest-categories/{interest_category_id}/interests', $tokens,
-            $parameters);
+        return $this->request('POST', '/lists/{list_id}/interest-categories/{interest_category_id}/interests', $tokens,
+            $parameters, $batch);
     }
 
     /**
