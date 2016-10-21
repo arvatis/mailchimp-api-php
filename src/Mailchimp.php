@@ -34,6 +34,10 @@ class Mailchimp
     const ERROR_CODE_INTERNAL_SERVER_ERROR = 'InternalServerError';
     const ERROR_CODE_COMPLIANCE_RELATED = 'ComplianceRelated';
 
+    const BATCH_STATUS_STARTED = 'started';
+    const BATCH_STATUS_PENDING = 'pending';
+    const BATCH_STATUS_COMPLETED = 'finished';
+
     /**
      * API version.
      *
@@ -226,6 +230,26 @@ class Mailchimp
         $this->batch_operations[] = $op;
 
         return $op;
+    }
+
+    /**
+     * Waits for a started or pending batch until its finished.
+     *
+     * @param object $batch
+     *
+     * @return bool
+     */
+    public function waitForBatch($batch)
+    {
+        if ($batch->status === self::BATCH_STATUS_COMPLETED) {
+            return true;
+        }
+
+        $batch = $this->getBatchOperation($batch->id);
+
+        if ($batch->status !== self::BATCH_STATUS_COMPLETED) {
+            $this->waitForBatch($batch);
+        }
     }
 
     /**
