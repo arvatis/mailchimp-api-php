@@ -851,6 +851,8 @@ class MailchimpEcommerce extends Mailchimp
      *   - title (string) The title of a product variant.
      * @param array $parameters
      *   An array of additional parameters. See API docs.
+     * @param bool $batch
+     *   TRUE to create a new pending batch operation.
      *
      * @return object
      *   The API Product response object.
@@ -859,7 +861,7 @@ class MailchimpEcommerce extends Mailchimp
      *
      * @see http://developer.mailchimp.com/documentation/mailchimp/reference/ecommerce/stores/products/#create-post_ecommerce_stores_store_id_products
      */
-    public function addProduct($store_id, $id, $title, $variants = [], $parameters = [])
+    public function addProduct($store_id, $id, $title, $variants = [], $parameters = [], $batch = false)
     {
         $tokens = [
             'store_id' => $store_id,
@@ -871,7 +873,7 @@ class MailchimpEcommerce extends Mailchimp
             'variants' => $variants,
         ];
 
-        return $this->request('POST', '/ecommerce/stores/{store_id}/products', $tokens, $parameters);
+        return $this->request('POST', '/ecommerce/stores/{store_id}/products', $tokens, $parameters, $batch);
     }
 
     /**
