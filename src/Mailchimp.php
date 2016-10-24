@@ -12,7 +12,6 @@ use GuzzleHttp\Exception\RequestException;
  */
 class Mailchimp
 {
-
     const VERSION = '1.0.4';
     const DEFAULT_DATA_CENTER = 'us1';
 
@@ -37,6 +36,13 @@ class Mailchimp
     const BATCH_STATUS_STARTED = 'started';
     const BATCH_STATUS_PENDING = 'pending';
     const BATCH_STATUS_COMPLETED = 'finished';
+    const BATCH_DEFAULT_DELAY = 5;
+
+    /**
+     * Default delay before checking batch job again (seconds)
+     * @var integer
+     */
+    public $batchDelay = self::BATCH_DEFAULT_DELAY;
 
     /**
      * API version.
@@ -150,6 +156,10 @@ class Mailchimp
      */
     public function processBatchOperations()
     {
+        if (empty($this->batch_operations)) {
+            return null;
+        }
+
         $parameters = [
             'operations' => $this->batch_operations,
         ];
@@ -241,6 +251,12 @@ class Mailchimp
      */
     public function waitForBatch($batch)
     {
+        if ($batch === null) {
+            return true;
+        }
+
+        sleep($this->batchDelay);
+
         if ($batch->status === self::BATCH_STATUS_COMPLETED) {
             return true;
         }
