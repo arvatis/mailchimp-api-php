@@ -255,11 +255,11 @@ class Mailchimp
             return true;
         }
 
-        sleep($this->batchDelay);
-
         if ($batch->total_operations == ($batch->finished_operations + $batch->errored_operations)) {
             return true;
         }
+
+        sleep($this->batchDelay);
 
         $batch = $this->getBatchOperation($batch->id);
 
