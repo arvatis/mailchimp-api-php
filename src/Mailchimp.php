@@ -257,13 +257,13 @@ class Mailchimp
 
         sleep($this->batchDelay);
 
-        if ($batch->status === self::BATCH_STATUS_COMPLETED) {
+        if ($batch->total_operations == ($batch->finished_operations + $batch->errored_operations)) {
             return true;
         }
 
         $batch = $this->getBatchOperation($batch->id);
 
-        if ($batch->status !== self::BATCH_STATUS_COMPLETED) {
+        if ($batch->total_operations != $batch->finished_operations) {
             $this->waitForBatch($batch);
         }
     }
